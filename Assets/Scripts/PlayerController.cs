@@ -1,4 +1,3 @@
-using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
@@ -8,7 +7,6 @@ public class PlayerController : MonoBehaviour
     private InputSystem_Actions inputs;
     private CharacterController controller;
 
-    public CinemachineCamera characterCamera;
     public TextMeshProUGUI healthText;
 
     private Vector2 moveInput;
@@ -23,7 +21,8 @@ public class PlayerController : MonoBehaviour
     {
         inputs = new();
         controller = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     private void OnEnable()
@@ -31,6 +30,13 @@ public class PlayerController : MonoBehaviour
         inputs.Enable();
         inputs.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         inputs.Player.Move.canceled += ctx => moveInput = Vector2.zero;
+    }
+
+    private void OnDisable()
+    {
+        inputs.Player.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
+        inputs.Player.Move.canceled -= ctx => moveInput = Vector2.zero;
+        inputs.Disable();
     }
 
     void Update()
@@ -41,13 +47,35 @@ public class PlayerController : MonoBehaviour
         if (!controller.isGrounded) moveDir.y = -9.81f;
 
         controller.Move(moveDir * Time.deltaTime);
+        ActualizarUI();
     }
+
+    public void MoreAttack()
+    {
+        attack = attack + 5;
+    }
+
+    public void LessAttack()
+    {
+        attack = attack - 5;
+    }
+
+    public void MoreSpeed()
+    {
+        moveSpeed = moveSpeed + 5;
+    }
+
+    public void LessSpeed()
+    {
+        moveSpeed = moveSpeed - 5;
+    }
+
 
     public void ActualizarUI()
     {
         if (healthText != null)
         {
-            healthText.text = "Vida: " + health;
+            healthText.text = "Vida: " + health + " | Atk: " + attack + " | Vel: " + moveSpeed;
         }
     }
 }
