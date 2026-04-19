@@ -7,15 +7,17 @@ public class TurnNode
     public Vector3 playerPosition;
     public float playerHealth;
     public int playerAttack;
+    public float playerSpeed;
 
     public TurnNode Next;
     public TurnNode Prev;
 
-    public TurnNode(Vector3 pos, float hp, int atk)
+    public TurnNode(Vector3 pos, float hp, int atk, float speed)
     {
         playerPosition = pos;
         playerHealth = hp;
         playerAttack = atk;
+        playerSpeed = speed;
     }
 }
 
