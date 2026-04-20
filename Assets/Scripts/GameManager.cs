@@ -32,7 +32,9 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI statsText;
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI IndicatorText;
-    public CinemachineCamera[] cameras; 
+    public CinemachineCamera[] cameras;
+    public GameObject gameOverPanel;
+
 
     private TurnNode head;
     private TurnNode last;
@@ -71,7 +73,7 @@ public class GameManager : MonoBehaviour
                 playerScript.canMove = false;
                 if (enemyScript != null)
                 {
-                    enemyScript.canMove = false;
+                    enemyScript.canMove = true;
                 }
                 if (IndicatorText != null)
                 {
@@ -209,6 +211,21 @@ public class GameManager : MonoBehaviour
             cameras[currentCameraIndex].Priority = 0;
             currentCameraIndex = (currentCameraIndex + 1) % cameras.Length;
             cameras[currentCameraIndex].Priority = 10;
+        }
+    }
+
+    public void PlayerDie()
+    {
+        isReplaying = true;
+        playerScript.canMove = false;
+        if (enemyScript != null)
+        {
+            enemyScript.canMove = false;
+        }
+
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(true);
         }
     }
 }

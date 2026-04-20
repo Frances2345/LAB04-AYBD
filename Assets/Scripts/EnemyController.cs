@@ -21,7 +21,7 @@ public class EnemyController : MonoBehaviour
     {
         if (target != null && agent != null)
         {
-            if (canMove && !agent.isStopped)
+            if (canMove)
             {
                 agent.isStopped = false;
                 agent.SetDestination(target.position);
@@ -29,7 +29,7 @@ public class EnemyController : MonoBehaviour
             else
             {
                 agent.isStopped = true;
-                agent.ResetPath();
+                agent.velocity = Vector3.zero;
             }
         }
     }
@@ -46,4 +46,6 @@ public class EnemyController : MonoBehaviour
             agent.isStopped = stop;
         }
     }
+
+
 }
