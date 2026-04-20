@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 10f;
     public float rotationSpeed = 200f;
 
+    public bool canMove = true;
+
     private void Awake()
     {
         inputs = new();
@@ -41,6 +43,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if(!canMove)
+        {
+            return;
+        }
+
         transform.Rotate(Vector3.up * moveInput.x * rotationSpeed * Time.deltaTime);
         Vector3 moveDir = (transform.forward * moveInput.y) * moveSpeed;
 

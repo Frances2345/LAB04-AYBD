@@ -5,18 +5,45 @@ public class EnemyController : MonoBehaviour
 {
     public Transform target;
     private NavMeshAgent agent;
+    public float speed = 3.5f;
+    public bool canMove = false;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        if (agent != null)
+        {
+            agent.speed = speed;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Update()
     {
-        if (target != null)
+        if (target != null && agent != null)
         {
-            agent.destination = target.position;
+            if (canMove && !agent.isStopped)
+            {
+                agent.isStopped = false;
+                agent.SetDestination(target.position);
+            }
+            else
+            {
+                agent.isStopped = true;
+                agent.ResetPath();
+            }
+        }
+    }
+
+    public void MoveTowardsPlayer()
+    {
+
+    }
+
+    public void SetStopped(bool stop)
+    {
+        if (agent != null)
+        {
+            agent.isStopped = stop;
         }
     }
 }
